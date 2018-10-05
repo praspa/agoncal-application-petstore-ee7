@@ -100,6 +100,50 @@ You are disconnected at the moment. Type 'connect' to connect to the server or '
 {"outcome" => "success"}
 ```
 
+### MySQL
+
+Mysql Connector 5.1.33 (Tested with MySQL Connector 5.1.39 and it worked)
+
+1. Create the jboss module:
+
+Enter in the file path ${EAP_HOME}/modules/system/layers/base and create the directories com/mysql/driver/main.
+Into the folder main copy the driver(mysql-connector-java-5.1.33.jar) library jar, and create a file module.xml as showed in the sample below
+
+```
+<module xmlns="urn:jboss:module:1.3" name="com.mysql.driver">
+    <resources>
+        <resource-root path="mysql-connector-java-5.1.33.jar" />
+    </resources>
+    <dependencies>
+        <module name="javax.api"/>
+        <module name="javax.transaction.api"/>
+    </dependencies>
+</module>
+```
+2. Register the module as driver with CLI.
+
+
+
+Start the server from the directory ${EAP_HOME}/bin and excute ./standalone.sh --server-config=${server-profile}
+
+Start the management CLI by executing ./jboss-cli.sh (if you’re using windows, you should do it in cmd. Go to ${EAP_HOME}/bin, and execute jboss-cli)
+
+Run the the command: /subsystem=datasources/jdbc-driver=mysql:add(driver-name=mysql,driver-module-name=com.mysql.driver,driver-class-name=com.mysql.jdbc.Driver)”
+
+If the operation is successful then the message below will be shown
+
+{"outcome" => "success"}
+
+In addition, the code below should be added to standalone.xml
+
+```
+    ...
+    <driver name="mysql" module="com.mysql.driver">
+        <driver-class>com.mysql.jdbc.Driver</driver-class>
+    </driver>
+    ...
+```
+
 #### Modify the default Datasource
 
 In the Wildfly [Admin Console](http://localhost:9990) check the default datasource [ExampleDS](http://localhost:9990/console/App.html#profile/ds-finder/datasources;name=ExampleDS). As you can see, it points to an in-memory H2 database. Make the following changes so it points at Postgres:
