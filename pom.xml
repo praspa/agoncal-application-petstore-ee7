@@ -201,7 +201,7 @@
           <failOnMissingWebXml>false</failOnMissingWebXml>
         </configuration>
       </plugin>
-      <plugin>
+      <!-- <plugin>
         <groupId>com.github.kongchen</groupId>
         <artifactId>swagger-maven-plugin</artifactId>
         <version>${version.swagger.plugin}</version>
@@ -244,7 +244,7 @@
             <version>${version.swagger}</version>
           </dependency>
         </dependencies>
-      </plugin>
+      </plugin>-->
     </plugins>
   </build>
 
